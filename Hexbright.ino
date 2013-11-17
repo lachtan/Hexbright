@@ -1,7 +1,18 @@
-#include <math.h>
 #include <Wire.h>
+#include <Arduino.h>
 
-#include "hexlib.h"
+#include "PowerButton.h"
+#include "Acceleration.h"
+
+// Settings
+#define OVERTEMP                340
+// Pin assignments
+#define DPIN_GLED               5
+#define DPIN_PWR                8
+#define DPIN_DRV_MODE           9
+#define DPIN_DRV_EN             10
+#define APIN_TEMP               0
+#define APIN_CHARGE             3
 
 int counter = 0;
 unsigned long last = 0;
@@ -51,33 +62,59 @@ void measure()
 }
 
 PowerButton button;
-Accelerometer acc;
+Accelerometer accelerometer;
 bool lastButtonState = false;
 byte tilt = 0;
+Acceleration acceleration;
+double roll = 0;
 
 void loop()
 {
-	acc.update();
-	acc.vector().print();
+	accelerometer.update();
+	acceleration.put(accelerometer.vector());
+
+	double _roll = acceleration.vector().roll();
+	if (abs(_roll) > 0.05)
+	{
+		roll += _roll;
+
+	}
+
+	Serial.print("totalSpin=");
+	Serial.print(roll);
+	Serial.print(" magnitude=");
+	Serial.print(acceleration.vector().magnitude());
+	Serial.print(" angle=");
+	Serial.print(acceleration.angleFromDown());
+	Serial.print(" roll=");
+	Serial.print(_roll);
+	Serial.print(" down=");
+	acceleration.down().print();
+	Serial.print(" vector=");
+	acceleration.vector().print();
 	Serial.println();
 
-	if (false && tilt != acc.tilt())
-	{		
+	delay(100);
+}
+
+void tiltShow()
+{
+	if (false && tilt != accelerometer.tilt())
+	{
 		Serial.print("tilt=");
-		Serial.print(acc.tilt());
+		Serial.print(accelerometer.tilt());
 		Serial.print(" shake=");
-		Serial.print(acc.shaked() ? "yes" : "no");
+		Serial.print(accelerometer.shaked() ? "yes" : "no");
 		Serial.print(" tapped=");
-		Serial.print(acc.tapped() ? "yes" : "no");
+		Serial.print(accelerometer.tapped() ? "yes" : "no");
 		Serial.print(" orientation=");
-		Serial.print(acc.orientation().name());
+		Serial.print(accelerometer.orientation().name());
 		Serial.print(" bafro=");
-		Serial.print(acc.lie().name());
+		Serial.print(accelerometer.lie().name());
 		Serial.println();
 
-		tilt = acc.tilt();
+		tilt = accelerometer.tilt();
 	}
-	delay(1000);
 }
 
 void xloop()

@@ -1,5 +1,7 @@
 #include <Arduino.h>
-#include "hexlib.h"
+#include "PowerButton.h"
+
+#define DPIN_RLED_SW 2
 
 PowerButton::PowerButton()
 {
