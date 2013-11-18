@@ -7,14 +7,17 @@
 #include "Vector.h"
 
 #define DPIN_ACC_INT 3
+#define ACC_ADDRESS 0x4C
+#define ACC_REG_XOUT 0
+#define ACC_REG_YOUT 1
+#define ACC_REG_ZOUT 2
+#define ACC_REG_TILT 3
+#define ACC_REG_INTS 6
+#define ACC_REG_MODE 7
 
-#define ACC_ADDRESS             0x4C
-#define ACC_REG_XOUT            0
-#define ACC_REG_YOUT            1
-#define ACC_REG_ZOUT            2
-#define ACC_REG_TILT            3
-#define ACC_REG_INTS            6
-#define ACC_REG_MODE            7
+/* ----------------------------------------------------------------------------
+    Orientation
+   ---------------------------------------------------------------------------- */
 
 class Orientation
 {
@@ -75,13 +78,18 @@ class Orientation
 	}
 };
 
+
+/* ----------------------------------------------------------------------------
+    Accelerometer
+   ---------------------------------------------------------------------------- */
+
 class Accelerometer
 {
-	private:
+private:
 	Vector _vector;
 	byte _tilt;
 
-	public:
+public:
 	Accelerometer()
 	:
 	_tilt(0)
@@ -213,16 +221,27 @@ class Accelerometer
 	}
 };
 
+
+/* ----------------------------------------------------------------------------
+    Acceleration
+   ---------------------------------------------------------------------------- */
+
 #define AccelerationMaxHistory 4
 
 class Acceleration
 {
-	private:
+private:
 	Vector _down;
 	Vector vectors[AccelerationMaxHistory];
 	char firstVectorIndex;
 
-	public:
+public:
+	Acceleration()
+		:
+		firstVectorIndex(0)
+	{
+	}
+	
 	void put(const Vector& vector)
 	{
 		shiftFirst();
@@ -251,7 +270,7 @@ class Acceleration
 		return Vector::angle(lightAxis, down()) * 180 / 3.14159;
 	}
 
-	private:
+private:
 	void findDown()
 	{
 		Vector down;

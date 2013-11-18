@@ -7,8 +7,4 @@ class PowerLight
 {
 };
 
-class TemperatureSensor
-{
-};
-
 #endif
