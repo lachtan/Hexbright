@@ -1,101 +1,168 @@
 #include <Wire.h>
 #include <Arduino.h>
 
-#include "PowerButton.h"
+#include "Power.h"
+#include "Button.h"
 #include "Acceleration.h"
-#include "PowerLight.h"
+#include "Light.h"
 #include "ThermalSensor.h"
 #include "Battery.h"
+#include "Led.h"
 
-// Pin assignments
-#define DPIN_GLED 5
-
-enum Mode
+class Mode
 {
-	OffMode,
-	OnMode
+public:
+	enum Enum
+	{
+		Off,
+		Tune,
+		Freeze
+	};
 };
 
 byte mode;
 byte nextMode;
 
+Button button;
+Accelerometer accelerometer;
+Acceleration acceleration;
+
+double lastAngle;
+double volume;
+unsigned long lastTimeTemperatureCheck;
+
+Led greenLed;
+
 void setup()
 {
-	pinMode(DPIN_PWR, INPUT);
-	digitalWrite(DPIN_PWR, LOW);
-
-	PowerButton::init();
+	Power::init();
+	Button::init();
 	Accelerometer::init();
-	PowerLight::init();
+	Light::init();
 	ThermalSensor::init();
-	Battery::init();
-
-	pinMode(DPIN_GLED, OUTPUT);
+	Battery::init();	
 
 	Serial.begin(115200);
 	Wire.begin();
 
 	Serial.println("Powered up!");
 
-	PowerLight::off();
+	Light::off();
 
-	mode = OffMode;
+	mode = Mode::Off;
+	lastAngle = 0;
+	volume = 200;
+
+	greenLed = Led(Led::Green);
 }
-
-PowerButton powerButton;
-Accelerometer accelerometer;
-Acceleration acceleration;
-
-double lastAngle = 0;
-double volume = 0;
 
 void loop()
 {
-	powerButton.update();
+	button.update();
+	checkOverheating();
+	signalizeCharging();
 
 	switch (mode)
 	{
-		case OffMode:
-			if (powerButton.justReleased())
-			{
-				nextMode = OnMode;
-				powerButton.resetChange();
+		case Mode::Off:
+			if (button.changed() && button.released())
+			{				
+				Light::setLevel(volume);
+				nextMode = Mode::Freeze;
 			}
 			break;
 
-		case OnMode:
-			if (powerButton.justReleased())
+		case Mode::Tune:
+			if (button.changed() && button.released(100))
 			{
-				nextMode = OffMode;
-				powerButton.resetChange();
+				nextMode = Mode::Freeze;
+			}
+			else if (button.changed() && button.doubleClicked())
+			{
+				nextMode = Mode::Off;
 			}
 			else
 			{
 				controllLight();
 			}
 			break;
+
+		case Mode::Freeze:
+			if (button.changed() && button.released(100))
+			{
+				nextMode = Mode::Tune;
+			}
+			else if (button.changed() && button.doubleClicked())
+			{
+				nextMode = Mode::Off;
+			}
+			break;
 	}
 
 	if (nextMode != mode)
 	{
+		button.resetChanged();
+		pinMode(DPIN_PWR, OUTPUT); // proc???
+		
 		switch (nextMode)
 		{
-			case OffMode:
+			case Mode::Off:
 				Serial.println("switch to off");
-				pinMode(DPIN_PWR, INPUT);
-				PowerLight::off();
+				Light::off();
+				Power::off();
 				break;
 
-			case OnMode:
-				Serial.println("switch to on");
-				pinMode(DPIN_PWR, OUTPUT);
-				volume = 100;
-				break;		
+			case Mode::Tune:
+				Power::on();
+				Serial.println("switch to tune");
+				volume = volume < 100 ? 100 : volume;
+				break;
+
+			case Mode::Freeze:
+				Power::on();
+				Serial.println("switch to freeze");
+				break;
 		}
 		mode = nextMode;
 	}
 
-	delay(50);
+	delay(10);
+}
+
+void checkOverheating()
+{
+	unsigned long now = millis();
+
+	if (now - lastTimeTemperatureCheck < 1000)
+	{
+		return;
+	}
+
+	if (!ThermalSensor::overheating())
+	{
+		return;
+	}
+
+	Serial.println("overheating");
+	Light::quickBlink(400);
+	volume = 100;
+	Light::setLevel(volume);
+	mode = Mode::Freeze;
+	nextMode = mode;
+
+	lastTimeTemperatureCheck = now;
+}
+
+void signalizeCharging()
+{
+	if (Battery::charging())
+	{
+		greenLed.blink(50, 500);
+	}
+	else
+	{
+		greenLed.off	();
+	}
 }
 
 void controllLight()
@@ -106,16 +173,23 @@ void controllLight()
 	double angle = 180 / PI * accelerometer.vector().roll();
 	double diff = lastAngle - angle;
 
-	if (abs(diff) < 100)
+	if (diff > 180)
 	{
-		volume += diff;
-		volume = volume < 0 ? 0 : volume;
-		volume = volume > 1000 ? 1000 : volume;
-
-		Serial.print("volume ");
-		Serial.println(volume);
-
-		PowerLight::setLevel(volume);
+		diff -= 360;
 	}
+	if (diff < -180)
+	{
+		diff += 360;
+	}
+	
+	volume += diff;
+	volume = volume < 0 ? 0 : volume;
+	volume = volume > 1000 ? 1000 : volume;
+
+	Serial.print("volume ");
+	Serial.println(volume);
+
+	Light::setLevel(volume);
+
 	lastAngle = angle;
 }

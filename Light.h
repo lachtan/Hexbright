@@ -9,7 +9,7 @@
 
 // http://www.candlepowerforums.com/vb/newreply.php?p=3889844
 
-class PowerLight
+class Light
 {
 public:
 	static void init()
@@ -24,7 +24,7 @@ public:
 	{
 		digitalWrite(DPIN_PWR, LOW);
 		digitalWrite(DPIN_DRV_MODE, LOW);
-		analogWrite(DPIN_DRV_EN, 0);
+		digitalWrite(DPIN_DRV_EN, LOW);
 	}
 
 	static void lowMode()
@@ -35,6 +35,12 @@ public:
 	static void highMode()
 	{
 		digitalWrite(DPIN_DRV_MODE, LOW);
+	}
+
+	static void directDrive(bool mode, byte value)
+	{
+		digitalWrite(DPIN_DRV_MODE, mode);
+		analogWrite(DPIN_DRV_EN, value);
 	}
 
 	// <0, 1000>
@@ -65,16 +71,16 @@ public:
 		}
 	}
 
-	static void quickBlink()
+	static void quickBlink(unsigned int level)
 	{
 	    for (int i = 0; i < 6; i++)
 	    {
-		    digitalWrite(DPIN_DRV_MODE, LOW);
-		    delay(100);
-		    digitalWrite(DPIN_DRV_MODE, HIGH);
-		    delay(100);
+			setLevel(0);
+			delay(50);
+			setLevel(level);
+			delay(50);
 	    }
-	    digitalWrite(DPIN_DRV_MODE, LOW);
+		setLevel(0);
 	}
 };
 
