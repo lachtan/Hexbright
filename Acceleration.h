@@ -199,19 +199,19 @@ public:
 		switch (pola)
 		{
 			case 1:
-			return Orientation::Up;
+				return Orientation::Up;
 
 			case 2:
-			return Orientation::Down;
+				return Orientation::Down;
 
 			case 5:
-			return Orientation::Right;
+				return Orientation::Right;
 
 			case 6:
-			return Orientation::Left;
+				return Orientation::Left;
 
 			default:
-			return Orientation::Unknwon;
+				return Orientation::Unknwon;
 		}
 	}
 

@@ -2,7 +2,7 @@
 	Editor: http://www.visualmicro.com
 	        arduino debugger, visual micro +, free forum and wiki
 	
-	Hardware: Hexbright, Platform=avr, Package=hexbright
+	Hardware: Hexbright, Platform=avr, Package=arduino
 */
 
 #define __AVR_ATmega168__
@@ -13,19 +13,21 @@
 #define __cplusplus
 extern "C" void __cxa_pure_virtual() {;}
 
+void setMode();
 //
-void measure();
 //
-void tiltShow();
-void xloop();
 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\variants\standard\pins_arduino.h" 
 #include "C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino\arduino.h"
-#include "C:\src\Arduino\Hexbright\Hexbright.ino"
-#include "C:\src\Arduino\Hexbright\Acceleration.h"
-#include "C:\src\Arduino\Hexbright\PowerButton.cpp"
-#include "C:\src\Arduino\Hexbright\PowerButton.h"
-#include "C:\src\Arduino\Hexbright\Timer.h"
-#include "C:\src\Arduino\Hexbright\Vector.h"
-#include "C:\src\Arduino\Hexbright\hexbright.h"
-#include "C:\src\Arduino\Hexbright\hexlib.h"
+#include "H:\src\arduino\Hexbright\Hexbright.ino"
+#include "H:\src\arduino\Hexbright\Acceleration.h"
+#include "H:\src\arduino\Hexbright\Battery.h"
+#include "H:\src\arduino\Hexbright\Button.h"
+#include "H:\src\arduino\Hexbright\Led.h"
+#include "H:\src\arduino\Hexbright\Light.h"
+#include "H:\src\arduino\Hexbright\Power.h"
+#include "H:\src\arduino\Hexbright\ThermalSensor.h"
+#include "H:\src\arduino\Hexbright\Timer.h"
+#include "H:\src\arduino\Hexbright\Vector.h"
+#include "H:\src\arduino\Hexbright\hexbright.h"
+#include "H:\src\arduino\Hexbright\hexlib.h"

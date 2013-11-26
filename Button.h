@@ -18,18 +18,23 @@ private:
 public:
 	Button()
 	{
-		time[0] = 0xffff;
-		time[1] = 0xffff;
-		time[2] = 0xffff;
-	
-		lastState = false;
-		lastTime = millis();
-		_changed = false;
+		reset();
 	}
 
 	static void init()
 	{
 		pinMode(DPIN_RLED_SW, INPUT);
+	}
+
+	void reset()
+	{
+		time[0] = 0xffff;
+		time[1] = 0xffff;
+		time[2] = 0xffff;
+		
+		lastState = false;
+		lastTime = millis();
+		_changed = false;
 	}
 
 	void update()
@@ -50,7 +55,7 @@ public:
 		else
 		{
 			// predpokladam ze si kazdy vycte hodnotu okamzite po update()
-			// hm al eco ruzne casy...
+			// hm ale co ruzne casy...
 			
 			//_changed = false;
 		}
@@ -78,7 +83,7 @@ public:
 		return _changed;
 	}
 
-	bool resetChanged()
+	void resetChanged()
 	{
 		_changed = false;
 	}

@@ -18,8 +18,7 @@
     <ToolchainFlavour>Native</ToolchainFlavour>
     <KeepTimersRunning>true</KeepTimersRunning>
     <OverrideVtor>false</OverrideVtor>
-    <OverrideVtorValue>
-    </OverrideVtorValue>
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
     <eraseonlaunchrule>0</eraseonlaunchrule>
     <ProgFlashFromRam>true</ProgFlashFromRam>
     <RamSnippetAddress>0x20000000</RamSnippetAddress>
@@ -28,15 +27,15 @@
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
       <framework-data>
-  <options />
-  <configurations />
-  <files />
-  <documentation help="" />
-  <offline-documentation help="" />
-  <dependencies>
-    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.3.0" />
-  </dependencies>
-</framework-data>
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.3.0" />
+        </dependencies>
+      </framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -61,7 +60,7 @@
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\leonardo</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\standard</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
@@ -135,7 +134,7 @@
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\leonardo</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\standard</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
@@ -261,6 +260,7 @@ location.sketchbook=c:\src\Arduino
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>hexbright</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
+        <arduino.upload.port>COM4</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>
@@ -286,7 +286,7 @@ location.sketchbook=c:\src\Arduino
         <avrgcc.compiler.directories.IncludePaths>
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\leonardo</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\standard</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
@@ -360,7 +360,7 @@ location.sketchbook=c:\src\Arduino
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
             <Value>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino</Value>
-            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\leonardo</Value>
+            <Value>C:\Program Files (x86)\Arduino\hardware\arduino\variants\standard</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\CAN_BUS_Shield\utility</Value>
             <Value>C:\Program Files (x86)\Arduino\libraries\EEPROM</Value>
@@ -486,6 +486,7 @@ location.sketchbook=c:\src\Arduino
         <visualmicro.application.name>arduino10x</visualmicro.application.name>
         <visualmicro.package.name>hexbright</visualmicro.package.name>
         <visualmicro.platform.name>avr</visualmicro.platform.name>
+        <arduino.upload.port>COM4</arduino.upload.port>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>
@@ -498,6 +499,39 @@ location.sketchbook=c:\src\Arduino
     <Folder Include="Visual Micro\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Acceleration.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hexlib.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Led.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Power.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Light.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ThermalSensor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Timer.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="hexbright.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Button.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Vector.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Battery.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Visual Micro\.Hexbright.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
