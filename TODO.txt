@@ -1,23 +1,19 @@
-namerit zakmity tlacitka
-snimat jak rychle to jen de, poznamnevat casy zmen
-mackat jak nejrychleji to pude
-
-napis par programu jak by meli vypadat i kdyz tu funkcionalitu zatim nemam
-udelat potrebne use cases
+Doladit
+- rizeni programu (tridy, switch, ...)
+- snimani tlacitek
+- vycitani akcelrometru po startu
 
 Prvky ovladani
 natoceni cocky - dolu, vodorovne, nahoru
 otaceni batrky v jeji podelne ose - regulace intenzity
 drzet vypinac a udelat shake
 
-master
+master - bike light
 mode 1: 175, 350, 500, 350 blik
 change mode: 5s
 mode 2: 575 a 175
 
-
-muzu vyuzit moznosti shake a tap
-napsat si vlastni Timer
-AccelerationSenzor
-Temperature
-ThermalSensor
+to write
+- doplnit zdroje z kterych jsem cerpal
+- odkazy na pouzite knihovny
+- napsat si vlastni Timer

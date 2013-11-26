@@ -1,14 +1,6 @@
 hexbright
 =========
 
-Better [hexbright](http://hexbright.com/) libraries then others.
+Better library then others.
 
-Targets
--------
-
-*   One
-
-*   Two
-
-*   Three
-
+[hexbright](http://hexbright.com/)
